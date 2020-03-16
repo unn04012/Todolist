@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'WelcomeController@index');  //1
+
+Route::group(['middleware' => ['web']], function () {  //2
+    //
 });
+
+// 추가된 라우팅
+Route::group(['middleware' => 'web'], function () { //3
+    Route::auth();
+    Route::get('/home', 'HomeController@index');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
